@@ -1,0 +1,31 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Image Gallery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>My Image Gallery</h1>
+<p>Explore beautiful moments</p>
+
+<div class="gallery" id="gallery"></div>
+
+<div class="modal" id="modal">
+    <button class="close" onclick="closeGallery()">✕</button>
+    <button class="prev" onclick="changeImage(-1)">❮</button>
+
+    <img id="bigImage">
+
+    <button class="next" onclick="changeImage(1)">❯</button>
+
+    <p id="counter"></p>
+
+    <button onclick="togglePlay()" id="playBtn">▶ Play Slideshow</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

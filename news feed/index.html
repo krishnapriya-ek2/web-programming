@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>News Feed</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            text-align: center;
+        }
+
+        h1 {
+            color: darkblue;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .news {
+            background: white;
+            width: 80%;
+            margin: 20px auto;
+            padding: 15px;
+            text-align: left;
+            border-radius: 8px;
+        }
+
+        .news img {
+            width: 200px;
+            max-width: 100%;
+        }
+
+        #message {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Latest News Feed</h1>
+
+    <button onclick="getNews()">Load News</button>
+
+    <p id="message"></p>
+
+    <div id="newsContainer"></div>
+
+    <script>
+
+        async function getNews() {
+
+            let container = document.getElementById("newsContainer");
+            let message = document.getElementById("message");
+
+            container.innerHTML = "";
+            message.innerHTML = "Loading news...";
+
+            const API_KEY = "YOUR_API_KEY";
+
+            const url = `https://newsapi.org/v2/top-headlines?country=in&pageSize=10&apiKey=${API_KEY}`;
+
+            try {
+
+                // Fetch news data
+                let response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch news");
+                }
+
+                let data = await response.json();
+
+                if (data.status !== "ok" || data.articles.length === 0) {
+                    throw new Error("No news available");
+                }
+
+                message.innerHTML = "";
+
+                // Display news articles
+                data.articles.forEach(article => {
+
+                    let news = document.createElement("div");
+                    news.className = "news";
+
+                    news.innerHTML = `
+                        <h2>${article.title || "No title"}</h2>
+
+                        <img src="${article.urlToImage || ''}"
+                             alt="News Image"
+                             onerror="this.style.display='none'">
+
+                        <p>${article.description || "No description available"}</p>
+
+                        <p><b>Source:</b> ${article.source.name || "Unknown"}</p>
+
+                        <p><b>Date:</b> ${
+                            article.publishedAt ?
+                            new Date(article.publishedAt).toLocaleDateString() :
+                            "Not available"
+                        }</p>
+
+                        <a href="${article.url}" target="_blank">
+                            Read More
+                        </a>
+                    `;
+
+                    container.appendChild(news);
+
+                });
+
+            }
+
+            catch (error) {
+                message.innerHTML = error.message;
+            }
+        }
+
+    </script>
+
+</body>
+</html>

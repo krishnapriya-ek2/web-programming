@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Catalogue</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            text-align: center;
+        }
+
+        h1 {
+            color: darkblue;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+        }
+
+        #products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .product {
+            background: white;
+            width: 200px;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px gray;
+        }
+
+        .product h3 {
+            color: darkblue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Product Catalogue</h1>
+
+    <input type="text" id="search"
+        placeholder="Search products...">
+
+    <select id="category">
+        <option value="All">All Categories</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Books">Books</option>
+    </select>
+
+    <div id="products"></div>
+
+    <script>
+
+        const products = [
+            { name: "Laptop", price: 50000, category: "Electronics" },
+            { name: "Mobile", price: 20000, category: "Electronics" },
+            { name: "Shirt", price: 800, category: "Clothing" },
+            { name: "Jeans", price: 1500, category: "Clothing" },
+            { name: "Java Book", price: 500, category: "Books" },
+            { name: "Python Book", price: 600, category: "Books" }
+        ];
+
+        const search = document.getElementById("search");
+        const category = document.getElementById("category");
+        const container = document.getElementById("products");
+
+        function displayProducts() {
+
+            let searchText = search.value.toLowerCase();
+            let selectedCategory = category.value;
+
+            let filtered = products.filter(function(p) {
+                return p.name.toLowerCase().includes(searchText) &&
+                    (selectedCategory === "All" ||
+                     p.category === selectedCategory);
+            });
+
+            container.innerHTML = "";
+
+            if (filtered.length === 0) {
+                container.innerHTML = "<h3>No products found</h3>";
+                return;
+            }
+
+            filtered.forEach(function(p) {
+                container.innerHTML += `
+                    <div class="product">
+                        <h3>${p.name}</h3>
+                        <p>Price: ₹${p.price}</p>
+                        <p>Category: ${p.category}</p>
+                    </div>
+                `;
+            });
+        }
+
+        search.addEventListener("input", displayProducts);
+        category.addEventListener("change", displayProducts);
+
+        displayProducts();
+
+    </script>
+
+</body>
+</html>

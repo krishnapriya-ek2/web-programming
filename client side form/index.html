@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Validation</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #f2f2f2;
+        }
+
+        form {
+            background: white;
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: blue;
+            color: white;
+            border: none;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+        }
+
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Registration Form</h1>
+
+    <form id="registerForm">
+        <input type="text" id="name" placeholder="Enter Name">
+        <p class="error" id="nameError"></p>
+
+        <input type="text" id="regEmail" placeholder="Enter Email">
+        <p class="error" id="regEmailError"></p>
+
+        <input type="password" id="regPassword" placeholder="Enter Password">
+        <p class="error" id="regPasswordError"></p>
+
+        <input type="password" id="confirmPassword" placeholder="Confirm Password">
+        <p class="error" id="confirmError"></p>
+
+        <button type="submit">Register</button>
+        <p id="regMessage"></p>
+    </form>
+
+
+    <h1>Login Form</h1>
+
+    <form id="loginForm">
+        <input type="text" id="loginEmail" placeholder="Enter Email">
+        <p class="error" id="loginEmailError"></p>
+
+        <input type="password" id="loginPassword" placeholder="Enter Password">
+        <p class="error" id="loginPasswordError"></p>
+
+        <button type="submit">Login</button>
+        <p id="loginMessage"></p>
+    </form>
+
+
+    <script>
+
+        // Email validation
+        function validEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // Password validation
+        function validPassword(password) {
+            return password.length >= 8 &&
+                   /[A-Z]/.test(password) &&
+                   /[0-9]/.test(password);
+        }
+
+        // Registration validation
+        document.getElementById("registerForm").onsubmit = function(e) {
+            e.preventDefault();
+
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("regEmail").value.trim();
+            let password = document.getElementById("regPassword").value;
+            let confirm = document.getElementById("confirmPassword").value;
+
+            let valid = true;
+
+            document.querySelectorAll(".error").forEach(el => el.innerHTML = "");
+            document.getElementById("regMessage").innerHTML = "";
+
+            if (name === "") {
+                document.getElementById("nameError").innerHTML = "Name is required";
+                valid = false;
+            }
+
+            if (email === "") {
+                document.getElementById("regEmailError").innerHTML = "Email is required";
+                valid = false;
+            }
+            else if (!validEmail(email)) {
+                document.getElementById("regEmailError").innerHTML = "Invalid email format";
+                valid = false;
+            }
+
+            if (password === "") {
+                document.getElementById("regPasswordError").innerHTML = "Password is required";
+                valid = false;
+            }
+            else if (!validPassword(password)) {
+                document.getElementById("regPasswordError").innerHTML =
+                    "Password must have 8 characters, one uppercase letter and one number";
+                valid = false;
+            }
+
+            if (confirm === "") {
+                document.getElementById("confirmError").innerHTML = "Confirm your password";
+                valid = false;
+            }
+            else if (password !== confirm) {
+                document.getElementById("confirmError").innerHTML = "Passwords do not match";
+                valid = false;
+            }
+
+            if (valid) {
+                document.getElementById("regMessage").innerHTML =
+                    "Registration successful!";
+                document.getElementById("regMessage").className = "success";
+            }
+        };
+
+
+        // Login validation
+        document.getElementById("loginForm").onsubmit = function(e) {
+            e.preventDefault();
+
+            let email = document.getElementById("loginEmail").value.trim();
+            let password = document.getElementById("loginPassword").value;
+
+            document.getElementById("loginEmailError").innerHTML = "";
+            document.getElementById("loginPasswordError").innerHTML = "";
+            document.getElementById("loginMessage").innerHTML = "";
+
+            let valid = true;
+
+            if (email === "") {
+                document.getElementById("loginEmailError").innerHTML = "Email is required";
+                valid = false;
+            }
+            else if (!validEmail(email)) {
+                document.getElementById("loginEmailError").innerHTML = "Invalid email format";
+                valid = false;
+            }
+
+            if (password === "") {
+                document.getElementById("loginPasswordError").innerHTML = "Password is required";
+                valid = false;
+            }
+
+            if (valid) {
+                document.getElementById("loginMessage").innerHTML =
+                    "Login form validated successfully!";
+                document.getElementById("loginMessage").className = "success";
+            }
+        };
+
+    </script>
+
+</body>
+</html>
